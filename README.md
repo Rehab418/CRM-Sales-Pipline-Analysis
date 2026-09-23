@@ -11,7 +11,7 @@ This project explores a CRM sales dataset structured across four relational tabl
 **Page 1 — Executive Overview**
 KPI summary cards (Total Closed Value, Avg Closed Value, Conversion %), closed deal value trend, deal count by stage, won vs. churned customers by month, and sales by sector.
 
-![Page 1 - Executive Overview](./photos/Screenshot 2026-09-23 094529.png)
+![Page 1 - Executive Overview](photos/Screenshot 2026-09-23 094529.png)
 <!-- Replace the line above with your own image path, e.g. ./your-image-name.png -->
 
 **Page 2 — Deal Stage & Account Analysis**
