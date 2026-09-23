@@ -6,6 +6,20 @@ An interactive Power BI dashboard analyzing sales pipeline performance, customer
 
 This project explores a CRM sales dataset structured across four relational tables to uncover actionable insights into sales team performance, deal progression, and revenue drivers. The dashboard is designed to move beyond descriptive reporting and answer specific business questions that support operational decisions.
 
+## 🖼️ Dashboard Preview
+
+**Page 1 — Executive Overview**
+KPI summary cards (Total Closed Value, Avg Closed Value, Conversion %), closed deal value trend, deal count by stage, won vs. churned customers by month, and sales by sector.
+
+![Page 1 - Executive Overview](./"F:\Data Analysis\Projects\CRM Sales Pipline Analysis\CRM Sales Pipline Analysis\photos\Screenshot 2026-09-23 094529.png")
+<!-- Replace the line above with your own image path, e.g. ./your-image-name.png -->
+
+**Page 2 — Deal Stage & Account Analysis**
+Opportunity distribution by deal stage, won customers by account size, and monthly sales trend.
+
+![Page 2 - Deal Stage & Account Analysis](./page2_deal_stage_overview.png)
+<!-- Replace the line above with your own image path, e.g. ./your-image-name.png -->
+
 ## 🗂️ Data Model
 
 The dashboard is built on a relational schema with the following tables:
@@ -50,7 +64,8 @@ During analysis, two notable data interpretation and quality issues were identif
 ## 📁 Repository Contents
 
 - `CRM_Sales_Pipeline_Analysis.pbix` — Power BI project file
-- Dashboard screenshots (Page 1: Executive Overview, Page 2: Detailed Analysis)
+- Dashboard preview images (placed next to this README — update the image filenames above to match yours)
+- `README.md` — Project documentation
 
 ## 👤 Author
 
