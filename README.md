@@ -11,13 +11,13 @@ This project explores a CRM sales dataset structured across four relational tabl
 **Page 1 — Executive Overview**
 KPI summary cards (Total Closed Value, Avg Closed Value, Conversion %), closed deal value trend, deal count by stage, won vs. churned customers by month, and sales by sector.
 
-![Page 1 - Executive Overview](./"F:\Data Analysis\Projects\CRM Sales Pipline Analysis\CRM Sales Pipline Analysis\photos\Screenshot 2026-09-23 094529.png")
+![Page 1 - Executive Overview](./photos/Screenshot 2026-09-23 094529.png)
 <!-- Replace the line above with your own image path, e.g. ./your-image-name.png -->
 
 **Page 2 — Deal Stage & Account Analysis**
 Opportunity distribution by deal stage, won customers by account size, and monthly sales trend.
 
-![Page 2 - Deal Stage & Account Analysis](./page2_deal_stage_overview.png)
+![Page 2 - Deal Stage & Account Analysis](./photos/Screenshot 2026-09-23 094704.png)
 <!-- Replace the line above with your own image path, e.g. ./your-image-name.png -->
 
 ## 🗂️ Data Model
