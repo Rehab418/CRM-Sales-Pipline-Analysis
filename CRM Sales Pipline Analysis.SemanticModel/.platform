@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "CRM Sales Pipline Analysis"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "46721b1f-8075-40bd-868b-4943353148de"
+  }
+}

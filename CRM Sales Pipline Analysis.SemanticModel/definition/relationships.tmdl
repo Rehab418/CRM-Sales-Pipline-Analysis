@@ -1,0 +1,22 @@
+relationship 69ffb13c-3d99-42f4-b30f-eacfcaac17f9
+	joinOnDateBehavior: datePartOnly
+	fromColumn: sales_pipeline.engage_date
+	toColumn: LocalDateTable_63f02ea3-20ec-4e41-ac9d-da7da8e9d7d5.Date
+
+relationship 5f7e5ee6-53c2-4324-8e42-8cc23650a7af
+	joinOnDateBehavior: datePartOnly
+	fromColumn: sales_pipeline.close_date
+	toColumn: LocalDateTable_14825952-d36c-4221-9146-c5d65eec559b.Date
+
+relationship AutoDetected_fff764d9-3f26-438d-9346-85a0b29ac2e1
+	fromColumn: sales_pipeline.sales_agent
+	toColumn: sales_teams.sales_agent
+
+relationship AutoDetected_f82e1a1d-5358-4c60-95ce-78ad12be2de5
+	fromColumn: sales_pipeline.product
+	toColumn: products.product
+
+relationship AutoDetected_2099570a-84a2-4f76-8485-6e8baa30dce4
+	fromColumn: sales_pipeline.account
+	toColumn: accounts.account
+

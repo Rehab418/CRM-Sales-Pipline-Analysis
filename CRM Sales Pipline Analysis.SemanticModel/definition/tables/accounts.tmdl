@@ -1,0 +1,99 @@
+table accounts
+	lineageTag: 6d43fb25-4d2f-4f31-8030-d17d9bed1cb3
+
+	column account
+		dataType: string
+		lineageTag: a3898650-ef35-4a83-864e-ae92d8d72103
+		summarizeBy: none
+		sourceColumn: account
+
+		annotation SummarizationSetBy = Automatic
+
+	column sector
+		dataType: string
+		lineageTag: 70bf1a02-4cc2-43ef-b1d6-7f6162aea21a
+		summarizeBy: none
+		sourceColumn: sector
+
+		annotation SummarizationSetBy = Automatic
+
+	column year_established
+		dataType: int64
+		formatString: 0
+		lineageTag: f7d9b0be-e57f-4411-9864-be03e1c478f8
+		summarizeBy: none
+		sourceColumn: year_established
+
+		annotation SummarizationSetBy = Automatic
+
+	column revenue
+		dataType: decimal
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 5828c5ad-84b8-496e-aac5-23436446ff89
+		summarizeBy: none
+		sourceColumn: revenue
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column employees
+		dataType: int64
+		formatString: 0
+		lineageTag: d8f0ada7-07be-4ac8-ad98-76f8eb54779d
+		summarizeBy: none
+		sourceColumn: employees
+
+		annotation SummarizationSetBy = Automatic
+
+	column office_location
+		dataType: string
+		lineageTag: e03bdda4-7c29-4846-80ca-13a74fb37956
+		summarizeBy: none
+		sourceColumn: office_location
+
+		annotation SummarizationSetBy = Automatic
+
+	column subsidiary_of
+		dataType: string
+		lineageTag: bff4639c-6e36-445c-8304-e39af47fc0bd
+		summarizeBy: none
+		sourceColumn: subsidiary_of
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Account Size' =
+			
+			SWITCH(
+			    TRUE(),
+			    accounts[employees] <= 10, "Micro(1-10)",
+			    accounts[employees] >= 11 && accounts[employees] <= 200, "Small(11-200)",
+			    accounts[employees] >= 201 && accounts[employees] <= 500, "Medium(201-500)",
+			    accounts[employees] >= 501 && accounts[employees] <= 1000, "Large(501-1000)",
+			    accounts[employees] > 1000, "Enterprise(1000+)",
+			    "Unknown"
+			)
+		lineageTag: b96506c9-1f89-40dc-9cef-b62486cde084
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition accounts = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("F:\Data Analysis\Projects\P3 CRM prdective analysis\dataset\accounts.csv"),[Delimiter=",", Columns=7, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"account", type text}, {"sector", type text}, {"year_established", Int64.Type}, {"revenue", type number}, {"employees", Int64.Type}, {"office_location", type text}, {"subsidiary_of", type text}}),
+				    #"Filtered Rows" = Table.SelectRows(#"Changed Type", each true),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Filtered Rows",{{"revenue", Currency.Type}}),
+				    #"Filtered Rows1" = Table.SelectRows(#"Changed Type1", each true),
+				    #"Replaced Value" = Table.ReplaceValue(#"Filtered Rows1","","n/a",Replacer.ReplaceValue,{"subsidiary_of"}),
+				    #"Filtered Rows2" = Table.SelectRows(#"Replaced Value", each true)
+				in
+				    #"Filtered Rows2"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

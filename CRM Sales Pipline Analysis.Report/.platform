@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "CRM Sales Pipline Analysis"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "4b4088ff-d17a-463f-863d-799a6aba2b5c"
+  }
+}

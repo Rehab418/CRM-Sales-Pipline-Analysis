@@ -1,0 +1,169 @@
+table sales_pipeline
+	lineageTag: 1ca62bf4-34d6-4484-a467-75e7d8ae797e
+
+	measure 'Conversion %' = ```
+			
+			DIVIDE(
+			    COUNTROWS(FILTER('sales_pipeline', 'sales_pipeline'[deal_stage] = "Won")),
+			    COUNTROWS('sales_pipeline')
+			) 
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 78237a0d-9eef-4711-81e1-1af6ffc0655f
+
+	measure 'Avg Closed Deal Value' =
+			
+			AVERAGEX(
+			    FILTER(
+			        'sales_pipeline',
+			        'sales_pipeline'[deal_stage]= "Won"
+			    ),
+			    'sales_pipeline'[close_value]
+			)
+		lineageTag: 6ddb69cf-1df2-4a00-b568-daad563ce4d0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Churned Customers' =
+			
+			COUNTROWS(
+			    FILTER(
+			        sales_pipeline,
+			        sales_pipeline[deal_stage] = "Lost"
+			    )
+			)
+		formatString: 0
+		lineageTag: 2efb280b-6fb0-415f-8ede-bf7c0b472f63
+
+	measure 'Average Close Days' =
+			
+			AVERAGEX(
+			    FILTER(
+			        sales_pipeline,
+			        sales_pipeline[deal_stage] = "Won"
+			    ),
+			    DATEDIFF(sales_pipeline[engage_date], sales_pipeline[close_date], DAY)
+			)
+		lineageTag: 05aba305-a312-440a-9b28-716b4c9f318c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'won Customers' =
+			
+			COUNTROWS(
+			    FILTER(
+			        sales_pipeline,
+			        sales_pipeline[deal_stage] = "Won"
+			    )
+			)
+		formatString: 0
+		lineageTag: c451043d-4231-4d7a-9a17-47649bed11c4
+
+	measure num_opportunities = COUNTA(sales_pipeline[opportunity_id])
+		formatString: 0
+		lineageTag: 0e24ac1d-b35a-46da-bbe0-218f62d54def
+
+	column opportunity_id
+		dataType: string
+		lineageTag: 7f1004ae-e5f4-4c37-a090-080dfbbea4f7
+		summarizeBy: none
+		sourceColumn: opportunity_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column sales_agent
+		dataType: string
+		lineageTag: 4b1edf37-e025-469d-917d-c805904bfaed
+		summarizeBy: none
+		sourceColumn: sales_agent
+
+		annotation SummarizationSetBy = Automatic
+
+	column product
+		dataType: string
+		lineageTag: 4460ef9e-6d74-4247-9326-a18299c47653
+		summarizeBy: none
+		sourceColumn: product
+
+		annotation SummarizationSetBy = Automatic
+
+	column account
+		dataType: string
+		lineageTag: 31fcd9d4-77df-4ae6-8002-225462d4e8a1
+		summarizeBy: none
+		sourceColumn: account
+
+		annotation SummarizationSetBy = Automatic
+
+	column deal_stage
+		dataType: string
+		lineageTag: 42db2f82-d1a6-4b95-9cca-601e32e94494
+		summarizeBy: none
+		sourceColumn: deal_stage
+
+		annotation SummarizationSetBy = Automatic
+
+	column engage_date
+		dataType: dateTime
+		formatString: dd-mmm-yy
+		lineageTag: 05d06e3b-3d59-4d61-89d0-692185547f75
+		summarizeBy: none
+		sourceColumn: engage_date
+
+		variation Variation
+			isDefault
+			relationship: 69ffb13c-3d99-42f4-b30f-eacfcaac17f9
+			defaultHierarchy: LocalDateTable_63f02ea3-20ec-4e41-ac9d-da7da8e9d7d5.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column close_date
+		dataType: dateTime
+		formatString: dd-mmm-yy
+		lineageTag: 16de0947-6565-48a5-b445-41c1e3bad586
+		summarizeBy: none
+		sourceColumn: close_date
+
+		variation Variation
+			isDefault
+			relationship: 5f7e5ee6-53c2-4324-8e42-8cc23650a7af
+			defaultHierarchy: LocalDateTable_14825952-d36c-4221-9146-c5d65eec559b.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column close_value
+		dataType: int64
+		formatString: 0
+		lineageTag: c3f547bc-1b42-4f50-9520-99c88156b234
+		summarizeBy: sum
+		sourceColumn: close_value
+
+		annotation SummarizationSetBy = Automatic
+
+	partition sales_pipeline = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("F:\Data Analysis\Projects\P3 CRM prdective analysis\dataset\sales_pipeline.csv"),[Delimiter=",", Columns=8, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"opportunity_id", type text}, {"sales_agent", type text}, {"product", type text}, {"account", type text}, {"deal_stage", type text}, {"engage_date", type date}, {"close_date", type date}, {"close_value", Int64.Type}}),
+				    #"Filtered Rows" = Table.SelectRows(#"Changed Type", each true),
+				    #"Replaced Value" = Table.ReplaceValue(#"Filtered Rows","","n/a",Replacer.ReplaceValue,{"account"}),
+				    #"Filtered Rows1" = Table.SelectRows(#"Replaced Value", each ([account] <> "n/a")),
+				    #"Replaced Value1" = Table.ReplaceValue(#"Filtered Rows1","GTXPro","GTX Pro",Replacer.ReplaceText,{"product"}),
+				    #"Filtered Rows2" = Table.SelectRows(#"Replaced Value1", each true)
+				in
+				    #"Filtered Rows2"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

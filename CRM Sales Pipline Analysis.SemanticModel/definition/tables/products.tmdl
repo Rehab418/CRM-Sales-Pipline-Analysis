@@ -1,0 +1,42 @@
+table products
+	lineageTag: 72bf3034-cdb6-4bdf-9e2f-2cd72427094b
+
+	column product
+		dataType: string
+		lineageTag: db0ff3c7-b2d4-47fb-b26b-92102c22b3fa
+		summarizeBy: none
+		sourceColumn: product
+
+		annotation SummarizationSetBy = Automatic
+
+	column series
+		dataType: string
+		lineageTag: adae2f0c-7a6b-4eae-a017-1f0240dd8c64
+		summarizeBy: none
+		sourceColumn: series
+
+		annotation SummarizationSetBy = Automatic
+
+	column sales_price
+		dataType: int64
+		formatString: 0
+		lineageTag: 9d74593e-70d2-46aa-9516-11fb2838a51b
+		summarizeBy: none
+		sourceColumn: sales_price
+
+		annotation SummarizationSetBy = Automatic
+
+	partition products = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("F:\Data Analysis\Projects\P3 CRM prdective analysis\dataset\products.csv"),[Delimiter=",", Columns=3, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"product", type text}, {"series", type text}, {"sales_price", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

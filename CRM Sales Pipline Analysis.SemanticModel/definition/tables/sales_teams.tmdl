@@ -1,0 +1,44 @@
+table sales_teams
+	lineageTag: 268ab6b6-4146-4703-9db2-b821c901ba05
+
+	column sales_agent
+		dataType: string
+		lineageTag: 35374e07-d434-4c91-84b3-6dfaae4b91fd
+		summarizeBy: none
+		sourceColumn: sales_agent
+
+		annotation SummarizationSetBy = Automatic
+
+	column manager
+		dataType: string
+		lineageTag: d4adc6d2-18af-4237-b7c9-78d496063d00
+		summarizeBy: none
+		sourceColumn: manager
+
+		annotation SummarizationSetBy = Automatic
+
+	column regional_office
+		dataType: string
+		lineageTag: 3db7c805-72c6-4429-8400-7908beb1fb1e
+		summarizeBy: none
+		sourceColumn: regional_office
+
+		annotation SummarizationSetBy = Automatic
+
+	partition sales_teams = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("F:\Data Analysis\Projects\P3 CRM prdective analysis\dataset\sales_teams.csv"),[Delimiter=",", Columns=3, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}, {"Column2", type text}, {"Column3", type text}}),
+				    #"Filtered Rows" = Table.SelectRows(#"Changed Type", each true),
+				    #"Promoted Headers" = Table.PromoteHeaders(#"Filtered Rows", [PromoteAllScalars=true]),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Promoted Headers",{{"sales_agent", type text}, {"manager", type text}, {"regional_office", type text}}),
+				    #"Filtered Rows1" = Table.SelectRows(#"Changed Type1", each true)
+				in
+				    #"Filtered Rows1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
